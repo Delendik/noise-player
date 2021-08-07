@@ -4,15 +4,16 @@ import './App.css';
 
 function App() {
 const [volume, setVolume] = React.useState(-20)
-const [color, setColor] = React.useState("white")
+let player:any
+player = new Tone.Noise("white")
 const white = () =>{
-  setColor("white")
+  player.type="white"
 }
 const pink = () =>{
-  setColor("pink")
+  player.type="pink"
 }
 const brown = () =>{
-  setColor("brown")
+  player.type="brown"
 }
 
 const upVolume = () => {
@@ -22,33 +23,17 @@ const downVolume = () => {
   setVolume(volume-5)
 }
 
-let clock:any
-
-// const start = () =>{
-//   clock = new Tone.Oscillator().toDestination().start();
-// // a scheduleable signal which can be connected to control an AudioParam or another Signal
-// const signal = new Tone.Signal({
-// 	value: "C4",
-// 	units: "frequency"
-// }).connect(clock.frequency);
-// // the scheduled ramp controls the connected signal
-// signal.rampTo("C2", 4, "+0.5");
-// }
-
-// const stop = () => {
-//   clock.stop();
-// }
 const start = () =>{
-  if(color === "white"){
-    clock = new Tone.Noise("white").start();
-    clock.volume.value = volume;
-  }else if(color === "pink"){
-    clock = new Tone.Noise("pink").start();
-  }else if(color === "brown"){
-    clock = new Tone.Noise("brown").start();
+  if(player.type === "white"){
+    player = new Tone.Noise("white").start();
+    player.volume.value = volume;
+  }else if(player.type === "pink"){
+    player = new Tone.Noise("pink").start();
+    player.volume.value = volume;
+  }else if(player.type === "brown"){
+    player = new Tone.Noise("brown").start();
+    player.volume.value = volume;
   }
-  // const source = new Tone.PWMOscillator().toDestination();
-  // source.volume.value = -50;
 
 // // make an autofilter to shape the noise
 const autoFilter = new Tone.AutoFilter({
@@ -57,11 +42,11 @@ const autoFilter = new Tone.AutoFilter({
 	octaves: 8
 }).toDestination().start();
 // connect the noise
-clock.connect(autoFilter);
+player.connect(autoFilter);
 }
 
 const stop = () => {
-  clock.stop();
+  player.stop();
 }
 
   return (
