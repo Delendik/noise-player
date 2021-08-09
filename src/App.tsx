@@ -57,8 +57,8 @@ const stop = () => {
         <button className="button buttonStop" onClick={white}>White</button>
         <button className="button buttonStop" onClick={pink}>Pink</button>
         <button className="button buttonStop" onClick={brown}>Brown</button>
-        <button className="button buttonStop" onClick={upVolume}>upVolume</button>
-        <button className="button buttonStop" onClick={downVolume}>downVolume</button>
+        <button className="button buttonStop" onClick={upVolume} disabled>upVolume</button>
+        <button className="button buttonStop" onClick={downVolume} disabled>downVolume</button>
 
       </header>
     </div>
