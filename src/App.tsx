@@ -3,7 +3,7 @@ import * as Tone from 'tone'
 import './App.css';
 
 function App() {
-const [volume, setVolume] = React.useState(-20)
+let volume:any = -20
 let player:any
 player = new Tone.Noise("white")
 const white = () =>{
@@ -17,16 +17,19 @@ const brown = () =>{
 }
 
 const upVolume = () => {
-  setVolume(volume+5)
+  volume+=1
+  player.volume.value = (volume);
 }
 const downVolume = () => {
-  setVolume(volume-5)
+  volume -=1
+  player.volume.value = (volume);
 }
 
 const start = () =>{
   if(player.type === "white"){
     player = new Tone.Noise("white").start();
     player.volume.value = volume;
+    console.log(player)
   }else if(player.type === "pink"){
     player = new Tone.Noise("pink").start();
     player.volume.value = volume;
@@ -57,8 +60,8 @@ const stop = () => {
         <button className="button buttonStop" onClick={white}>White</button>
         <button className="button buttonStop" onClick={pink}>Pink</button>
         <button className="button buttonStop" onClick={brown}>Brown</button>
-        <button className="button buttonStop" onClick={upVolume} disabled>upVolume</button>
-        <button className="button buttonStop" onClick={downVolume} disabled>downVolume</button>
+        <button className="button buttonStop" onClick={upVolume}>upVolume</button>
+        <button className="button buttonStop" onClick={downVolume}>downVolume</button>
 
       </header>
     </div>
