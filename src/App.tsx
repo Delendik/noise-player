@@ -1,10 +1,22 @@
 import React from 'react';
 import * as Tone from 'tone'
-import './App.css';
+// import './App.module.scss';
+import cnBind from 'classnames/bind'
+import styles from './App.module.scss'
+
+const cx = cnBind.bind(styles)
 
 function App() {
-let volume:any = -20
-let volumeWhite:any = -30
+let play:boolean=false;
+
+let changePlayClass = cx(
+  "playButton", {
+  "play": !play,
+  "stop": play
+})
+
+let volume:any = -25
+let volumeWhite:any = -35
 let player:any
 player = new Tone.Noise("white")
 const white = () =>{
@@ -40,7 +52,6 @@ const downVolume = () => {
 }
 
 const start = () =>{
-  console.log(player)
   if(player.type === "white"){
     player = new Tone.Noise("white").start();
     player.volume.value = volumeWhite;
@@ -51,22 +62,6 @@ const start = () =>{
     player = new Tone.Noise("brown").start();
     player.volume.value = volume;
   }
-
-// // make an autofilter to shape the noise
-// let autoFilter:any
-// if(player.type === "brown"){
-//   autoFilter = new Tone.AutoFilter({
-//     frequency: "0n",
-//     baseFrequency: 200,
-//     octaves: 4
-//   }).toDestination().start();
-// }else{
-//   autoFilter = new Tone.AutoFilter({
-//     frequency: "0n",
-//     baseFrequency: 200,
-//     octaves: 8
-//   }).toDestination().start();
-// }
 const autoFilter = new Tone.AutoFilter({
   frequency: "0n",
   baseFrequency: 200,
@@ -78,11 +73,36 @@ player.connect(autoFilter);
 
 const stop = () => {
   player.stop();
+  // setPlay(false)
+}
+const toogle= () => {
+  play = !play
 }
 
+const playstop = () => {
+  if(!play){
+    start()
+    
+    console.log("stop")
+    toogle()
+    // setPlay(false)
+    console.log(play)
+  } else{
+    stop();
+    console.log("play")
+    toogle()
+    // setPlay(true)
+    console.log(play)
+  }
+}
+
+
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className={styles.App}>
+      <div className={styles.player}>
+        <button className={changePlayClass} onClick={playstop}></button>
+      </div>
+      <header className={styles.App__header}>
         <button className="button buttonStart" onClick={start}>Play</button>
         <button className="button buttonStop" onClick={stop}>Stop</button>
         <button className="button buttonStop" onClick={white}>White</button>
@@ -90,7 +110,6 @@ const stop = () => {
         <button className="button buttonStop" onClick={brown}>Brown</button>
         <button className="button buttonStop" onClick={upVolume}>upVolume</button>
         <button className="button buttonStop" onClick={downVolume}>downVolume</button>
-
       </header>
     </div>
   );
